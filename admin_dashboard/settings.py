@@ -83,16 +83,42 @@ WSGI_APPLICATION = 'admin_dashboard.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'admin_dashboard',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '3306',
+from urllib.parse import urlparse
+
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if DATABASE_URL:
+    parsed_url = urlparse(DATABASE_URL)
+    if parsed_url.scheme.startswith('mysql'):
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': parsed_url.path.lstrip('/'),
+                'USER': parsed_url.username,
+                'PASSWORD': parsed_url.password,
+                'HOST': parsed_url.hostname,
+                'PORT': parsed_url.port or '3306',
+            }
+        }
+    elif parsed_url.scheme.startswith('sqlite'):
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / parsed_url.path.lstrip('/'),
+            }
+        }
+    else:
+        raise ValueError(f'Unsupported database scheme: {parsed_url.scheme}')
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'admin_dashboard',
+            'USER': 'root',
+            'PASSWORD': 'root',
+            'HOST': 'localhost',
+            'PORT': '3306',
+        }
     }
-}
 
 
 STATIC_URL = 'static/'
