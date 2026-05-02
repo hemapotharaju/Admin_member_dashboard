@@ -85,13 +85,32 @@ WSGI_APPLICATION = 'admin_dashboard.wsgi.application'
 
 from urllib.parse import urlparse
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
+
+def get_mysql_engine():
+    try:
+        import mysql.connector.django  # noqa: F401
+        return 'mysql.connector.django'
+    except ImportError:
+        return 'django.db.backends.mysql'
+
+
+def get_env(name, default=None):
+    return os.environ.get(name, default)
+
+
+DATABASE_URL = get_env('DATABASE_URL')
+MYSQL_DATABASE = get_env('MYSQL_DATABASE')
+MYSQL_USER = get_env('MYSQL_USER')
+MYSQL_PASSWORD = get_env('MYSQL_PASSWORD')
+MYSQL_HOST = get_env('MYSQL_HOST')
+MYSQL_PORT = get_env('MYSQL_PORT')
+
 if DATABASE_URL:
     parsed_url = urlparse(DATABASE_URL)
     if parsed_url.scheme.startswith('mysql'):
         DATABASES = {
             'default': {
-                'ENGINE': 'django.db.backends.mysql',
+                'ENGINE': get_mysql_engine(),
                 'NAME': parsed_url.path.lstrip('/'),
                 'USER': parsed_url.username,
                 'PASSWORD': parsed_url.password,
@@ -108,15 +127,22 @@ if DATABASE_URL:
         }
     else:
         raise ValueError(f'Unsupported database scheme: {parsed_url.scheme}')
+elif MYSQL_DATABASE:
+    DATABASES = {
+        'default': {
+            'ENGINE': get_mysql_engine(),
+            'NAME': MYSQL_DATABASE,
+            'USER': MYSQL_USER,
+            'PASSWORD': MYSQL_PASSWORD,
+            'HOST': MYSQL_HOST or 'localhost',
+            'PORT': MYSQL_PORT or '3306',
+        }
+    }
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'admin_dashboard',
-            'USER': 'root',
-            'PASSWORD': 'root',
-            'HOST': 'localhost',
-            'PORT': '3306',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 
