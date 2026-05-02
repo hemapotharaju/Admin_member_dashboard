@@ -98,7 +98,7 @@ def get_env(name, default=None):
     return os.environ.get(name, default)
 
 
-DATABASE_URL = get_env('DATABASE_URL')
+DATABASE_URL = get_env('DATABASE_URL') or get_env('MYSQL_URL')
 MYSQL_DATABASE = get_env('MYSQL_DATABASE')
 MYSQL_USER = get_env('MYSQL_USER')
 MYSQL_PASSWORD = get_env('MYSQL_PASSWORD')

@@ -34,3 +34,13 @@ By default, the app uses SQLite for local development. To use MySQL, set these e
 - `MYSQL_PASSWORD`
 - `MYSQL_HOST`
 - `MYSQL_PORT`
+
+For Railway, the project also supports the plugin connection strings:
+- `DATABASE_URL`
+- `MYSQL_URL`
+
+If you add a Railway MySQL plugin, Railway will usually provide a connection URL automatically. If it does not, copy the MySQL connection string from the service and set `DATABASE_URL` or `MYSQL_URL`.
+
+Also set these production variables on Railway:
+- `SECRET_KEY`
+- `DEBUG=false`
