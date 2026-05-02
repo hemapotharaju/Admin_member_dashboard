@@ -1,0 +1,20 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Login - Admin Dashboard{% endblock %}
+
+{% block body_id %}login-page{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <h1>Login</h1>
+    <form id="login-form">
+        <label>Username</label>
+        <input type="text" name="username" required>
+        <label>Password</label>
+        <input type="password" name="password" required>
+        <button type="submit">Login</button>
+    </form>
+    <p class="form-note">Don't have an account? <a href="/signup/">Sign up</a></p>
+    <div class="status-message" id="login-message"></div>
+</div>
+{% endblock %}

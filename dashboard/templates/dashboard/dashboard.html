@@ -1,0 +1,63 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Dashboard - Admin Dashboard{% endblock %}
+
+{% block body_id %}dashboard-page{% endblock %}
+
+{% block content %}
+<div class="dashboard-shell">
+    <header class="dashboard-header">
+        <div>
+            <h1>Admin Dashboard</h1>
+            <p>Manage projects, tasks, and team progress.</p>
+        </div>
+        <button id="logout-button">Logout</button>
+    </header>
+
+    <section class="summary-grid" id="summary-cards"></section>
+
+    <section class="card">
+        <h2>Create Project</h2>
+        <form id="project-form">
+            <label>Project name</label>
+            <input type="text" name="name" required>
+            <label>Description</label>
+            <textarea name="description"></textarea>
+            <button type="submit">Create project</button>
+        </form>
+        <div class="status-message" id="project-message"></div>
+    </section>
+
+    <section class="card">
+        <h2>Create Task</h2>
+        <form id="task-form">
+            <label>Title</label>
+            <input type="text" name="title" required>
+            <label>Description</label>
+            <textarea name="description"></textarea>
+            <label>Project ID</label>
+            <input type="number" name="project" required>
+            <label>Due date</label>
+            <input type="date" name="due_date">
+            <label>Priority</label>
+            <select name="priority">
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+                <option value="high">High</option>
+            </select>
+            <button type="submit">Create task</button>
+        </form>
+        <div class="status-message" id="task-message"></div>
+    </section>
+
+    <section class="card">
+        <h2>Projects</h2>
+        <div id="projects-list" class="item-list"></div>
+    </section>
+
+    <section class="card">
+        <h2>Tasks</h2>
+        <div id="tasks-list" class="item-list"></div>
+    </section>
+</div>
+{% endblock %}
