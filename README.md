@@ -44,3 +44,8 @@ If you add a Railway MySQL plugin, Railway will usually provide a connection URL
 Also set these production variables on Railway:
 - `SECRET_KEY`
 - `DEBUG=false`
+- `ALLOWED_HOSTS=admin-member-dashboard-production.up.railway.app`
+
+If you are using a custom Railway domain, replace the value with your domain.
+
+Create a `.env.example` file in the repo with these values to document your environment variables for the project.
